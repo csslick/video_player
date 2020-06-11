@@ -1,0 +1,21 @@
+    *{margin: 0;padding: 0; box-sizing: border-box;}
+    body {
+      background: #666;
+      text-align: center;
+    }
+    section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    h1{ 
+      position: absolute;
+      width: 100%;
+      padding-top: 50px;
+      color: #fff;
+    }
+    figure{
+      width: 800px;
+      /* border: 1px solid red; */
+    }
