@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>video</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <h1>Custome Video Player</h1>
+  <section>
+    <figure>
+      <video src="./video.mp4" id="video" width="100%"></video>
+      <time>00:00:00</time>
+      <span class="duration">duration</span><br>
+      <input type="range" min="1" max="100" value="0" class="slider" id="myRange">
+      <button id="play">play</button>
+      <button id="pause">pause</button>
+    </figure>
+  </section>
+
+
+  <script>
+    var v = document.getElementById('video');
+    var play = document.getElementById('play');
+    var pause = document.getElementById('pause');
+    var play_timer = null;
+    var slider = document.querySelector('.slider');
+    var duration = 0, minutes = 0, seconds = 0;
+
+    // 재생시간 불러오기
+    v.addEventListener('loadedmetadata', function () {
+      console.log(v.duration);
+      minutes = parseInt(v.duration / 60);
+      seconds = parseInt(v.duration % 60);
+      duration = v.duration;
+      document.querySelector('.duration').innerHTML =
+        minutes + ':' + seconds;
+    });
+
+    var play_timer = function(){
+      setInterval(function () {
+        var time = document.querySelector('time');
+        minutes = parseInt(v.currentTime / 60);
+        seconds = parseInt(v.currentTime % 60);
+        time.innerHTML = minutes + ':' + seconds;;
+
+        // 슬라이더 값 표시
+        slider.value = v.currentTime * 100 / duration;
+      }, 1000 / 24);    
+    }
+    
+    var clear_play_timer = function () {
+      clearInterval(play_timer);
+    }
+
+    var isPlay = false; // 재생 상태 플래그
+    play.addEventListener('click', function () {
+      isPlay = true;
+      v.play();
+      play_timer();
+    })
+
+    // 정지
+    pause.addEventListener('click', function () {
+      isPlay = false;
+      v.pause();
+      clearInterval(play_timer);
+    })
+
+    // 슬라이더 조정시 비디오 위치
+    slider.addEventListener('input', function () {
+      v.currentTime = (this.value * duration) / 100;
+      v.pause();
+      clearInterval(play_timer);
+      console.log(v.currentTime);
+    })
+
+    slider.addEventListener('mousedown', function () {
+      v.pause();
+      clearInterval(play_timer);
+    })
+
+    slider.addEventListener('mouseup', function () {
+      // 비디오 재생 상태 이면 다시 재생
+      if (isPlay) { v.play(); }
+      console.log('up')
+      play_timer();
+
+    })
+  </script>
+
+</body>
+
+</html>
